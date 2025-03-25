@@ -2,11 +2,11 @@
 require 'functions.php';
 
 if(isset($_POST["register"])){
-    if(registrasi($_POST)>0){
+    if(registrasi(data:$_POST)>0){
         echo "<script> alert ('Data User Berhasil Ditambahkan')
         document.location.href = '' </script>";
     } else {
-        echo mysqli_error($center);
+        echo mysqli_error(mysql:$center);
     }
 }
 ?>

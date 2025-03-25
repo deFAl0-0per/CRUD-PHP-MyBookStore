@@ -1,7 +1,7 @@
 <?php 
 require 'functions.php';
 if(isset($_POST["submit"])){
-    if(bukutambah($_POST)>0){
+    if(bukutambah(data:$_POST)>0){
         echo "<script> alert ('Data Berhasil Ditambahkan!')
         document.location.href = 'kategoribukuread.php'</script>";
     } else{

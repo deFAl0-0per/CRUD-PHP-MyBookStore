@@ -3,10 +3,10 @@ require 'functions.php';
 
 $ub = $_GET["id"];
 
-$ubh = query("SELECT * FROM data_peminjaman_buku WHERE id = $ub")[0];
+$ubh = query(query:"SELECT * FROM data_peminjaman_buku WHERE id = $ub")[0];
 
 if(isset($_POST["submit"])){
-    if(ubah($_POST)>0){
+    if(ubah(ub:$_POST)>0){
         echo "<script> alert ('Data Berhasil Diubah!')
         document.location.href = 'data.php'</script>";
     } else{

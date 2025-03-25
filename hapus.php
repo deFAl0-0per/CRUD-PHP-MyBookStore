@@ -1,7 +1,7 @@
 <?php 
 require 'functions.php';
 $dl = $_GET["id"];
-    if(hapus($dl) > 0 ){
+    if(hapus(dl:$dl) > 0 ){
         echo "<script> alert('Data Berhasil Dihapus!')
         document.location.href = 'data.php' </script>";
     } else{

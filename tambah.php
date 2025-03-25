@@ -1,7 +1,7 @@
 <?php 
 require 'functions.php';
 if(isset($_POST["submit"])){
-    if(masukan($_POST)>0){
+    if(masukan(data:$_POST)>0){
         echo "<script> alert ('Data Berhasil Ditambahkan!')
         document.location.href = 'data.php'</script>";
     } else{

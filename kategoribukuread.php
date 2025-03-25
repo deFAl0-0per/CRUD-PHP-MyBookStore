@@ -1,9 +1,9 @@
 <?php 
 require 'functions.php';
-$siswa = query("SELECT * FROM kategori_buku ");
+$siswa = query(query:"SELECT * FROM kategori_buku ");
 
 if(isset($_POST["cari"])){
-    $siswa = caribuku($_POST["keyword"]);
+    $siswa = caribuku(ky:$_POST["keyword"]);
 }
 ?>
 

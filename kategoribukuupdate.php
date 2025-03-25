@@ -4,7 +4,7 @@ include 'functions2.php';
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
     $sql = "SELECT * FROM kategori_buku WHERE id=$id";
-    $result = $koneksi->query($sql);
+    $result = $koneksi->query(query:$sql);
     $row = $result->fetch_assoc();
 }
 
@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $sql = "UPDATE kategori_buku SET nama='$nama', deskripsi='$deskripsi' WHERE id=$id";
     
-    if ($koneksi->query($sql) === TRUE) {
+    if ($koneksi->query(query:$sql) === TRUE) {
         echo "Kategori berhasil diupdate";
     } else {
         echo "Error: " . $sql . "<br>" . $koneksi->error;

@@ -1,9 +1,9 @@
 <?php 
 require 'functions.php';
-$siswa = query("SELECT * FROM data_peminjaman_buku ");
+$siswa = query(query:"SELECT * FROM data_peminjaman_buku ");
 
 if(isset($_POST["cari"])){
-    $siswa = cari($_POST["keyword"]);
+    $siswa = cari(ky:$_POST["keyword"]);
 }
 ?>
 

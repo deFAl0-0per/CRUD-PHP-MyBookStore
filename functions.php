@@ -1,35 +1,35 @@
 <?php 
 use LDAP\Result;
-$center = mysqli_connect("localhost", "root", "", "phpdasar");
+$center = mysqli_connect(hostname:"localhost", username:"root", password:"", database:"phpdasar");
 
-function query($query){
+function query($query): array{
     global $center;
-    $manage = mysqli_query($center, $query);
+    $manage = mysqli_query(mysql:$center, query:$query);
     $mng = [];
-    while ($mg = mysqli_fetch_assoc($manage)){
+    while ($mg = mysqli_fetch_assoc(result:$manage)){
         $mng[]=$mg;
     } return $mng;
 }
-function masukan($data){
+function masukan($data): int|string{
     global $center;
 
-    $nama = htmlspecialchars($data["nama"]);
-    $email = htmlspecialchars($data["email"]);
-    $kategori_buku = htmlspecialchars($data["kategori_buku"]);
-    $data_buku = htmlspecialchars($data["data_buku"]);
+    $nama = htmlspecialchars(string:$data["nama"]);
+    $email = htmlspecialchars(string:$data["email"]);
+    $kategori_buku = htmlspecialchars(string:$data["kategori_buku"]);
+    $data_buku = htmlspecialchars(string:$data["data_buku"]);
 
     $query = "INSERT INTO data_peminjaman_buku VALUES
     ('', '$nama', '$email', '$kategori_buku', '$data_buku')";
 
-    mysqli_query($center, $query);
-    return mysqli_affected_rows($center);
+    mysqli_query(mysql:$center, query:$query);
+    return mysqli_affected_rows(mysql:$center);
 
 }
-function bukutambah($data){
+function bukutambah($data):bool|int|string{
     global $center;
 
-    $nama_buku = htmlspecialchars($data["nama_buku"]);
-    $deskripsi = htmlspecialchars($data["deskripsi"]);
+    $nama_buku = htmlspecialchars(string:$data["nama_buku"]);
+    $deskripsi = htmlspecialchars(string:$data["deskripsi"]);
     // $gambar = htmlspecialchars($data["gambar"]);
 
     $gambar = upload();
@@ -41,11 +41,11 @@ function bukutambah($data){
     $query = "INSERT INTO kategori_buku VALUES
     ('', '$nama_buku', '$deskripsi', '$gambar')";
 
-mysqli_query($center, $query);
-return mysqli_affected_rows($center);
+mysqli_query(mysql:$center, query:$query);
+return mysqli_affected_rows(mysql:$center);
 
 }
-function upload(){
+function upload():bool|string{
     $file = $_FILES['gambar']['name'];
     $size = $_FILES['gambar']['size'];
     $error = $_FILES['gambar']['error'];
@@ -56,9 +56,9 @@ function upload(){
         return false;
     }
     $ekstensi_gambar_valid = ['jpg', 'jpeg','png'];
-    $ekstensi_gambar = explode('.', $file);
-    $ekstensi_gambar = strtolower(end($ekstensi_gambar));
-    if(!in_array($ekstensi_gambar, $ekstensi_gambar_valid)){
+    $ekstensi_gambar = explode(separator:'.', string:$file);
+    $ekstensi_gambar = strtolower(string:end(array:$ekstensi_gambar));
+    if(!in_array(needle:$ekstensi_gambar, haystack:$ekstensi_gambar_valid)){
         echo "<script>alert('Yang ada upload bukan gambar')</script>";
         return false;
     }
@@ -71,23 +71,23 @@ function upload(){
     $file.= '.';
     $file.= $ekstensi_gambar;
 
-    move_uploaded_file($tmp_name, 'poto/'. $file);
+    move_uploaded_file(from:$tmp_name, to:'poto/'. $file);
     return $file;
 }
-function hapus($dl){
+function hapus($dl):int|string{
     global $center;
-    mysqli_query($center, "DELETE FROM data_peminjaman_buku WHERE id = $dl");
-    return mysqli_affected_rows($center);
+    mysqli_query(mysql:$center, query:"DELETE FROM data_peminjaman_buku WHERE id = $dl");
+    return mysqli_affected_rows(mysql:$center);
     
 }
-function ubah($ub){
+function ubah($ub):int|string{
     global $center;
 
     $id = $ub["id"];
-    $nama = htmlspecialchars($ub["nama"]);
-    $email = htmlspecialchars($ub["email"]);
-    $kategori_buku = htmlspecialchars($ub["kategori_buku"]);
-    $data_buku = htmlspecialchars($ub["data_buku"]);
+    $nama = htmlspecialchars(string:$ub["nama"]);
+    $email = htmlspecialchars(string:$ub["email"]);
+    $kategori_buku = htmlspecialchars(string:$ub["kategori_buku"]);
+    $data_buku = htmlspecialchars(string:$ub["data_buku"]);
 
     $query = "UPDATE data_peminjaman_buku SET
              nama = '$nama',
@@ -97,32 +97,32 @@ function ubah($ub){
              WHERE id = $id
              ";
 
-    mysqli_query($center, $query);
-    return mysqli_affected_rows($center);
+    mysqli_query(mysql:$center,query: $query);
+    return mysqli_affected_rows(mysql:$center);
 }
-function cari($ky){
+function cari($ky): array{
     $query = "SELECT * FROM data_peminjaman_buku WHERE
               nama LIKE '%$ky%' OR
               email LIKE '%$ky%'
               ";
-              return query($query);
+              return query(query:$query);
 }
-function caribuku($ky){
+function caribuku($ky): array{
     $query = "SELECT * FROM kategori_buku WHERE
               nama_buku LIKE '%$ky%'
               ";
-              return query($query);
+              return query(query:$query);
 }
-function registrasi($data){
+function registrasi($data):bool|int|string{
     global $center;
 
-    $username = strtolower(stripcslashes($data["username"]));
-    $email = strtolower(stripcslashes($data["email"]));
-    $password = mysqli_real_escape_string($center, $data["password"]);
-    $password2 = mysqli_real_escape_string($center, $data["password2"]);
+    $username = strtolower(string:stripcslashes(string:$data["username"]));
+    $email = strtolower(string:stripcslashes(string:$data["email"]));
+    $password = mysqli_real_escape_string(mysql:$center, string:$data["password"]);
+    $password2 = mysqli_real_escape_string(mysql:$center, string:$data["password2"]);
 
-    $result = mysqli_query($center, "SELECT username FROM data_user WHERE username = '$username'");
-    if(mysqli_fetch_assoc($result)){
+    $result = mysqli_query(mysql:$center, query: "SELECT username FROM data_user WHERE username = '$username'");
+    if(mysqli_fetch_assoc(result:$result)){
         echo "<script> 
         alert ('Username sudah terdaftar')
         </script>";
@@ -135,11 +135,11 @@ function registrasi($data){
         </script>";
         return false;   
     }
-    $password = password_hash($password, PASSWORD_DEFAULT);
+    $password = password_hash(password:$password, algo:PASSWORD_DEFAULT);
 
-    mysqli_query($center, "INSERT INTO data_user VALUES ('', '$username', '$email',  '$password')");
+    mysqli_query(mysql:$center, query:"INSERT INTO data_user VALUES ('', '$username', '$email',  '$password')");
 
-    return mysqli_affected_rows($center);
+    return mysqli_affected_rows(mysql:$center);
     
 }
 ?>
